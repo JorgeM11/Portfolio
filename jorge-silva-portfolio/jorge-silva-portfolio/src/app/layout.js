@@ -21,11 +21,11 @@ export const metadata = {
   openGraph: {
     title: "Jorge Silva | Frontend Developer",
     description: "Explora mis proyectos y habilidades como Desarrollador Web enfocado en crear experiencias de usuario excepcionales.",
-    url: "https://portfolio-jorge-silva-16.vercel.app", // Sustituye con tu URL real
+    url: "https://portfolio-jorge-silva-16.vercel.app/", // Sustituye con tu URL real
     siteName: "Portafolio de Jorge Silva",
     images: [
       {
-        url: "/og-image.jpg", // Esta es la imagen que se mostrará
+        url: "/og-image.png", // Esta es la imagen que se mostrará
         width: 1200,
         height: 630,
         alt: "Preview del Portafolio de Jorge Silva",
