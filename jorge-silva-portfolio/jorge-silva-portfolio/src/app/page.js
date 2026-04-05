@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, FolderGit2, User, Mail, Terminal, Menu, X, ExternalLink, Check } from 'lucide-react';
 
 // Importamos Feather Icons para el Footer
@@ -20,51 +20,6 @@ import MagicBento from '@/components/react-bits/MagicBento';
 import ScrollStack, { ScrollStackItem } from '@/components/react-bits/ScrollStack';
 import Dock from '@/components/react-bits/Dock';
 import LogoLoop from '@/components/react-bits/LogoLoop';
-
-// --- COMPONENTE LAZY IFRAME (NUEVO FIX) ---
-// Evita que los iframes carguen todos a la vez, liberando la red y la GPU
-const LazyIframe = ({ src, title }) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsIntersecting(true);
-          observer.disconnect(); // Una vez cargado, dejamos de observar
-        }
-      },
-      { rootMargin: '200px' } // Empieza a cargar 200px antes de aparecer en pantalla
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full bg-[var(--card-bg)] flex items-center justify-center">
-      {!isIntersecting ? (
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-6 h-6 border-2 border-[#5227FF] border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-xs text-[var(--text-muted)] font-mono">Cargando preview...</span>
-        </div>
-      ) : (
-        <iframe 
-          src={src} 
-          className="absolute top-0 left-0 border-0 pointer-events-none bg-white"
-          style={{ width: '400%', height: '400%', transform: 'scale(0.25)', transformOrigin: 'top left' }}
-          tabIndex="-1"
-          loading="lazy"
-          title={title}
-        />
-      )}
-    </div>
-  );
-};
 
 // --- ESTILOS DINÁMICOS, CSS AVANZADO Y SWITCHES ---
 const globalStyles = `
@@ -355,7 +310,7 @@ export default function Portfolio() {
 
       {/* --- SISTEMA DE NOTIFICACIONES TIPO SILEO --- */}
       <div 
-        className={`fixed top-8 right-4 sm:right-8 z-[100] flex items-center gap-3 px-5 py-3 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] shadow-[0_10px_40px_rgba(82,39,255,0.2)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${notification ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0 pointer-events-none'}`}
+        className={`fixed top-8 right-4 sm:right-8 z-50 flex items-center gap-3 px-5 py-3 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] shadow-[0_10px_40px_rgba(82,39,255,0.2)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${notification ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0 pointer-events-none'}`}
       >
         {notification?.type === 'loading' && (
           <div className="w-5 h-5 border-2 border-[#5227FF] border-t-transparent rounded-full animate-spin"></div>
@@ -501,7 +456,6 @@ export default function Portfolio() {
 
           <div className="flex-1 w-full flex justify-center items-center min-h-[300px] lg:min-h-[450px] relative">
             <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full max-w-2xl drop-shadow-[0_0_40px_rgba(82,39,255,0.15)]">
-              {/* Contenido SVG mantenido intacto */}
               <defs>
                 <linearGradient id="glassSurface" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="var(--text-main)" stopOpacity="0.06" />
@@ -580,8 +534,10 @@ export default function Portfolio() {
                 <rect x="580" y="80" width="190" height="110" rx="10" fill="var(--svg-monitor)" stroke="var(--card-border)" strokeWidth="1.5" className="transition-colors duration-500" />
                 <rect x="580" y="80" width="190" height="110" rx="10" fill="url(#glassSurface)" />
                 <text x="595" y="125" className="font-code" fontSize="11" fill="#FF9FFC">const <tspan fill="var(--text-main)" opacity="0.8" className="transition-colors duration-500">res =</tspan> await</text>
-                <text x="595" y="145" className="font-code" fontSize="11" fill="var(--text-main)" opacity="0.8" className="transition-colors duration-500">fetch(<tspan fill="#5227FF">'/api/data'</tspan>);</text>
-                <text x="595" y="165" className="font-code" fontSize="11" fill="var(--text-main)" opacity="0.8" className="transition-colors duration-500">return res.json();</text>
+                
+                {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
+                <text x="595" y="145" className="font-code transition-colors duration-500" fontSize="11" fill="var(--text-main)" opacity="0.8">fetch(<tspan fill="#5227FF">'/api/data'</tspan>);</text>
+                <text x="595" y="165" className="font-code transition-colors duration-500" fontSize="11" fill="var(--text-main)" opacity="0.8">return res.json();</text>
               </g>
 
               <g id="card-3" className="parallax-card-3" filter="url(#dropShadow)">
@@ -597,11 +553,15 @@ export default function Portfolio() {
               <g id="floating-code">
                 <g className="parallax-code-1" transform="translate(40, 60) rotate(-15)">
                   <rect x="-10" y="-15" width="180" height="30" rx="6" fill="var(--svg-monitor)" stroke="var(--card-border)" className="transition-colors duration-500" />
-                  <text x="0" y="4" className="font-code" fontSize="13" fill="var(--text-main)" opacity="0.7" className="transition-colors duration-500">&lt;<tspan fill="#FF9FFC">div</tspan> <tspan fill="#5227FF">className</tspan>="..."&gt;</text>
+                  
+                  {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
+                  <text x="0" y="4" className="font-code transition-colors duration-500" fontSize="13" fill="var(--text-main)" opacity="0.7">&lt;<tspan fill="#FF9FFC">div</tspan> <tspan fill="#5227FF">className</tspan>="..."&gt;</text>
                 </g>
                 <g className="parallax-code-2" transform="translate(60, 480) rotate(10)">
                   <rect x="-10" y="-15" width="140" height="30" rx="6" fill="var(--svg-monitor)" stroke="var(--card-border)" className="transition-colors duration-500" />
-                  <text x="0" y="4" className="font-code" fontSize="13" fill="var(--text-main)" opacity="0.8" className="transition-colors duration-500">{`{ `}<tspan fill="#5227FF">renderUI()</tspan>{` }`}</text>
+                  
+                  {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
+                  <text x="0" y="4" className="font-code transition-colors duration-500" fontSize="13" fill="var(--text-main)" opacity="0.8">{`{ `}<tspan fill="#5227FF">renderUI()</tspan>{` }`}</text>
                 </g>
               </g>
             </svg>
@@ -641,7 +601,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- 3. PROYECTOS (SCROLL STACK CON PREVIEWS LAZY) --- */}
+        {/* --- 3. PROYECTOS (SCROLL STACK CON IMÁGENES) --- */}
         <section id="projects" className="mt-16 sm:mt-24 pt-4 relative projects-section Projects">
           <BlurText text="Proyectos Destacados" className="text-4xl md:text-5xl font-bold justify-center mb-2 w-full text-center" direction="bottom" />
           <p className="text-[var(--text-muted)] mb-8 text-center text-lg transition-colors duration-500">Un vistazo a mis desarrollos más recientes.</p>
@@ -676,8 +636,11 @@ export default function Portfolio() {
                        Visitar Sitio <ExternalLink size={18} />
                      </span>
                   </div>
-                  {/* AQUÍ APLICAMOS EL LAZY IFRAME */}
-                  <LazyIframe src="https://cruz-roja-frontend.vercel.app/" title="Preview Cruz Roja" />
+                  <img 
+                    src="/cruz-roja.png" 
+                    alt="Preview Ambulatorio Cruz Roja" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
                 </a>
               </ScrollStackItem>
 
@@ -703,8 +666,11 @@ export default function Portfolio() {
                        Visitar Sitio <ExternalLink size={18} />
                      </span>
                   </div>
-                  {/* AQUÍ APLICAMOS EL LAZY IFRAME */}
-                  <LazyIframe src="http://bekkacorporation.com/" title="Preview Bekka" />
+                  <img 
+                    src="/bekka.png" 
+                    alt="Preview Sistema E-commerce Bekka" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
                 </a>
               </ScrollStackItem>
 
@@ -730,8 +696,11 @@ export default function Portfolio() {
                        Visitar Sitio <ExternalLink size={18} />
                      </span>
                   </div>
-                  {/* AQUÍ APLICAMOS EL LAZY IFRAME */}
-                  <LazyIframe src="https://fendermedical.com/" title="Preview Fender" />
+                  <img 
+                    src="/fender.png" 
+                    alt="Preview Landing Page Fender" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
                 </a>
               </ScrollStackItem>
             </ScrollStack>
@@ -739,7 +708,7 @@ export default function Portfolio() {
         </section>
 
         {/* --- 4. CONTACTO (id="contact") --- */}
-        <section id="contact" className=" pt-20 pb-16 border-t border-[var(--glass-border)] text-center relative z-10 contact-section Contacto transition-colors duration-500">
+        <section id="contact" className=" pt-5 md:pt-20 pb-16 border-t border-[var(--glass-border)] text-center relative z-10 contact-section Contacto transition-colors duration-500">
           <BlurText text="¿Trabajamos juntos?" className="text-4xl md:text-6xl font-bold text-[var(--text-main)] justify-center mb-8 flex text-center w-full contact-title transition-colors duration-500" direction="bottom" />
           <p className="text-[var(--text-muted)] text-lg mb-12 max-w-2xl mx-auto contact-description transition-colors duration-500">
             Busco oportunidades donde pueda aportar mi experiencia para desarrollar interfaces y ecosistemas web modernos. Si tienes un proyecto en mente, hablemos.

@@ -79,7 +79,7 @@ const cardData = [
   {
     color: 'var(--card-bg)',
     title: 'Arquitectura',
-    description: 'Sistemas construidos para crecer con tu empresa. Código ordenado, escalable y mantenible (TypeScript).',
+    description: 'Sistemas construidos para crecer con tu empresa. Código ordenado, escalable y mantenible.',
     label: 'Ingeniería',
     svg: (
       <svg viewBox="0 0 100 100" className="absolute -bottom-6 -right-6 w-36 h-36 opacity-15 svg-spin pointer-events-none z-0" style={{ animationDuration: '20s' }}>

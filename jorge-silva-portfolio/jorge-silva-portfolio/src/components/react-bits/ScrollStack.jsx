@@ -1,23 +1,87 @@
 'use client';
 
-import { useLayoutEffect, useEffect, useRef, useCallback, useState } from 'react';
+import React, { useLayoutEffect, useEffect, useRef, useCallback, useState } from 'react';
 import Lenis from 'lenis';
+import { motion } from 'framer-motion'; // IMPORTAMOS FRAMER MOTION
 
-export const ScrollStackItem = ({ children, itemClassName = '' }) => (
-  <div className="scroll-stack-wrapper relative w-full">
-    <div
-      className={`scroll-stack-card relative w-full rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
-      style={{
-        backfaceVisibility: 'hidden',
-        transformStyle: 'preserve-3d'
-      }}
-    >
-      {children}
+export const ScrollStackItem = ({ children, itemClassName = '', isMobile = false }) => {
+  
+  // --- VERSIÓN MÓVIL / TABLET (ANIMACIÓN FLUIDA EN SCROLL) ---
+  if (isMobile) {
+    return (
+      <motion.div 
+        // Estado inicial (oculto, un poco más abajo y un poco más pequeño)
+        initial={{ opacity: 0, y: 60, scale: 0.95 }}
+        // Estado cuando entra en pantalla
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        // Configuración del trigger:
+        // once: false permite que la animación se repita al subir y bajar
+        // margin: "-15% 0px" hace que la animación empiece un poquito después de asomarse
+        viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={`relative w-full rounded-[30px] sm:rounded-[40px] shadow-[0_10px_30px_rgba(82,39,255,0.08)] overflow-hidden ${itemClassName}`.trim()}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+
+  // --- VERSIÓN DESKTOP (LA ANIMACIÓN DE APILADO ACTUAL) ---
+  return (
+    <div className="scroll-stack-wrapper relative w-full">
+      <div
+        className={`scroll-stack-card relative w-full rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
+        style={{
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          transformStyle: 'preserve-3d',
+          transform: 'translateZ(0)',
+        }}
+      >
+        {children}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-const ScrollStack = ({
+// --- COMPONENTE PRINCIPAL (RUTEO MÓVIL VS DESKTOP) ---
+const ScrollStack = (props) => {
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Asumimos móvil primero para mejor performance
+
+  useEffect(() => {
+    setMounted(true);
+    const checkScreen = () => {
+      // 1024px suele ser el punto de quiebre para laptops
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
+
+  // Si no ha montado o es móvil/tablet, devolvemos el contenedor con poco espacio
+  if (!mounted || isMobile) {
+    return (
+      <div className={`relative w-full flex flex-col gap-10 sm:gap-14 pb-12 ${props.className || ''}`}>
+        {React.Children.map(props.children, (child) => {
+          if (React.isValidElement(child)) {
+            // Le pasamos la bandera isMobile al Item para que active Framer Motion
+            return React.cloneElement(child, { isMobile: true });
+          }
+          return child;
+        })}
+      </div>
+    );
+  }
+
+  // Si es Laptop/Desktop, cargamos la animación compleja
+  return <AnimatedScrollStack {...props} />;
+};
+
+// --- LÓGICA DE ANIMACIÓN DESKTOP (MANTENIDA EXACTAMENTE IGUAL) ---
+const AnimatedScrollStack = ({
   children,
   className = '',
   itemDistance = 120,
@@ -119,15 +183,9 @@ const ScrollStack = ({
         translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
       }
 
-      // FIX MAESTRO PARA EL TEMBLOR:
-      // Eliminamos el Math.round. Permitimos al motor CSS y a la GPU utilizar 
-      // cálculos sub-píxel reales, dándole máxima suavidad al scroll lento.
-      const newTransform = {
-        translateY: translateY,
-        scale: scale
-      };
-
+      const newTransform = { translateY, scale };
       const lastTransform = lastTransformsRef.current.get(i);
+
       const hasChanged =
         !lastTransform ||
         Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
@@ -151,17 +209,8 @@ const ScrollStack = ({
 
     isUpdatingRef.current = false;
   }, [
-    itemScale,
-    itemStackDistance,
-    stackPosition,
-    scaleEndPosition,
-    baseScale,
-    useWindowScroll,
-    onStackComplete,
-    calculateProgress,
-    parsePercentage,
-    getScrollData,
-    getElementOffset
+    itemScale, itemStackDistance, stackPosition, scaleEndPosition, baseScale,
+    useWindowScroll, onStackComplete, calculateProgress, parsePercentage, getScrollData, getElementOffset
   ]);
 
   useEffect(() => {
@@ -170,7 +219,6 @@ const ScrollStack = ({
       duration: 1.2,
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.5,
       infinite: false,
       lerp: 0.1
     });
@@ -236,18 +284,8 @@ const ScrollStack = ({
   }, [itemDistance, useWindowScroll, updateCardTransforms]);
 
   const containerStyles = useWindowScroll
-    ? {
-        overscrollBehavior: 'contain',
-        WebkitOverflowScrolling: 'touch',
-        transform: 'translateZ(0)',
-        willChange: 'scroll-position'
-      }
-    : {
-        overscrollBehavior: 'contain',
-        WebkitOverflowScrolling: 'touch',
-        scrollBehavior: 'smooth',
-        willChange: 'scroll-position'
-      };
+    ? { transform: 'translateZ(0)', willChange: 'scroll-position' }
+    : { scrollBehavior: 'smooth', willChange: 'scroll-position' };
 
   const containerClassName = useWindowScroll
     ? `relative w-full ${className}`.trim()
@@ -258,7 +296,12 @@ const ScrollStack = ({
   return (
     <div className={containerClassName} ref={scrollerRef} style={containerStyles}>
       <div className="scroll-stack-inner pt-[10vh] px-0 pb-[30rem] min-h-screen" style={innerContainerStyle}>
-        {children}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, { isMobile: false });
+          }
+          return child;
+        })}
         <div className="scroll-stack-end w-full h-px" />
       </div>
     </div>
