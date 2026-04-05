@@ -680,11 +680,11 @@ export default function Portfolio() {
                   <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Frontend • NETGEN</span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-3 sm:mb-5 project-title transition-colors duration-500">Landing Page Fender</h3>
                   <p className="text-[var(--text-muted)] text-sm sm:text-base mb-5 sm:mb-8 leading-relaxed project-description transition-colors duration-500">
-                    Integración de IA a través de una API para evaluación de writing y speaking. Desarrollo de landing pages adaptativas garantizando la entrega eficiente de consultas y gestión de leads.
+                    Desarrollo de landing pages adaptativas garantizando la entrega eficiente de consultas y gestión de leads.
                   </p>
                   <div className="flex flex-wrap gap-2 sm:gap-3 project-tags">
                     <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Next.js</span>
-                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">IA API</span>
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Responsive</span>
                     <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Tailwind CSS</span>
                   </div>
                 </div>
