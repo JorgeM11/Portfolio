@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect, useEffect, useRef, useCallback, useState } from 'react';
 import Lenis from 'lenis';
-import { motion } from 'framer-motion'; // IMPORTAMOS FRAMER MOTION
+import { motion } from 'framer-motion';
 
 export const ScrollStackItem = ({ children, itemClassName = '', isMobile = false }) => {
   
@@ -10,14 +10,11 @@ export const ScrollStackItem = ({ children, itemClassName = '', isMobile = false
   if (isMobile) {
     return (
       <motion.div 
-        // Estado inicial (oculto, un poco más abajo y un poco más pequeño)
-        initial={{ opacity: 0, y: 60, scale: 0.95 }}
-        // Estado cuando entra en pantalla
+        initial={{ opacity: 0, y: 40, scale: 0.96 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        // Configuración del trigger:
-        // once: false permite que la animación se repita al subir y bajar
-        // margin: "-15% 0px" hace que la animación empiece un poquito después de asomarse
-        viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
+        // FIX: amount: 0.15 exige que el 15% de la tarjeta esté visible.
+        // margin negativo abajo ayuda a que no espere hasta el final de la pantalla.
+        viewport={{ once: false, amount: 0.15, margin: "0px 0px -10% 0px" }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`relative w-full rounded-[30px] sm:rounded-[40px] shadow-[0_10px_30px_rgba(82,39,255,0.08)] overflow-hidden ${itemClassName}`.trim()}
       >
@@ -80,7 +77,7 @@ const ScrollStack = (props) => {
   return <AnimatedScrollStack {...props} />;
 };
 
-// --- LÓGICA DE ANIMACIÓN DESKTOP (MANTENIDA EXACTAMENTE IGUAL) ---
+// --- LÓGICA DE ANIMACIÓN DESKTOP ---
 const AnimatedScrollStack = ({
   children,
   className = '',
