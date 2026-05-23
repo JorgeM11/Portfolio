@@ -535,7 +535,6 @@ export default function Portfolio() {
                 <rect x="580" y="80" width="190" height="110" rx="10" fill="url(#glassSurface)" />
                 <text x="595" y="125" className="font-code" fontSize="11" fill="#FF9FFC">const <tspan fill="var(--text-main)" opacity="0.8" className="transition-colors duration-500">res =</tspan> await</text>
                 
-                {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
                 <text x="595" y="145" className="font-code transition-colors duration-500" fontSize="11" fill="var(--text-main)" opacity="0.8">fetch(<tspan fill="#5227FF">'/api/data'</tspan>);</text>
                 <text x="595" y="165" className="font-code transition-colors duration-500" fontSize="11" fill="var(--text-main)" opacity="0.8">return res.json();</text>
               </g>
@@ -554,13 +553,11 @@ export default function Portfolio() {
                 <g className="parallax-code-1" transform="translate(40, 60) rotate(-15)">
                   <rect x="-10" y="-15" width="180" height="30" rx="6" fill="var(--svg-monitor)" stroke="var(--card-border)" className="transition-colors duration-500" />
                   
-                  {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
                   <text x="0" y="4" className="font-code transition-colors duration-500" fontSize="13" fill="var(--text-main)" opacity="0.7">&lt;<tspan fill="#FF9FFC">div</tspan> <tspan fill="#5227FF">className</tspan>="..."&gt;</text>
                 </g>
                 <g className="parallax-code-2" transform="translate(60, 480) rotate(10)">
                   <rect x="-10" y="-15" width="140" height="30" rx="6" fill="var(--svg-monitor)" stroke="var(--card-border)" className="transition-colors duration-500" />
                   
-                  {/* SOLUCIÓN AL ERROR ROJO: Unificamos los className aquí */}
                   <text x="0" y="4" className="font-code transition-colors duration-500" fontSize="13" fill="var(--text-main)" opacity="0.8">{`{ `}<tspan fill="#5227FF">renderUI()</tspan>{` }`}</text>
                 </g>
               </g>
@@ -601,12 +598,12 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- 3. PROYECTOS (SCROLL STACK CON IMÁGENES) --- */}
+        {/* --- 3. PROYECTOS (SCROLL STACK CON 5 IMÁGENES) --- */}
         <section id="projects" className="mt-16 sm:mt-24 pt-4 relative projects-section Projects">
           <BlurText text="Proyectos Destacados" className="text-4xl md:text-5xl font-bold justify-center mb-2 w-full text-center" direction="bottom" />
           <p className="text-[var(--text-muted)] mb-8 text-center text-lg transition-colors duration-500">Un vistazo a mis desarrollos más recientes.</p>
           
-          <div className="min-h-[200vh] scroll-container-fixed">
+          <div className="min-h-[300vh] scroll-container-fixed">
             <ScrollStack 
               useWindowScroll={true} 
               itemDistance={200} 
@@ -614,7 +611,68 @@ export default function Portfolio() {
               blurAmount={0} 
               stackPosition="15%"
             >
-              {/* PROYECTO 1: Cruz Roja */}
+              
+              {/* PROYECTO 1: App Ganadera */}
+              <ScrollStackItem itemClassName="bg-[var(--card-bg)] border border-[var(--card-border)] flex flex-col md:flex-row overflow-hidden min-h-min md:min-h-[450px] h-auto md:h-[450px] group project-item transition-colors duration-500 shadow-sm">
+                <div className="p-5 sm:p-6 md:p-12 flex-1 flex flex-col justify-center project-content z-10">
+                  <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Frontend</span>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-3 sm:mb-5 project-title transition-colors duration-500">Dashboard App Ganadera</h3>
+                  <p className="text-[var(--text-muted)] text-sm sm:text-base mb-5 sm:mb-8 leading-relaxed project-description transition-colors duration-500">
+                    Aplicación web orientada a la gestión y monitoreo del sector ganadero. Desarrollo de paneles de control (dashboards) modernos, visualización de datos y flujos de trabajo eficientes.
+                  </p>
+                  <div className="flex flex-wrap gap-2 sm:gap-3 project-tags">
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">React</span>
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Dashboard</span>
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Tailwind CSS</span>
+                  </div>
+                </div>
+                
+                <a href="https://app-ganadera-azure.vercel.app/" target="_blank" rel="noopener noreferrer" className="w-full shrink-0 md:flex-1 bg-[var(--bg-main)] border-t md:border-t-0 md:border-l border-[var(--card-border)] relative h-[250px] sm:h-[350px] md:h-auto overflow-hidden group cursor-pointer block transition-colors duration-500">
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-300 z-10 pointer-events-none"></div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
+                     <span className="bg-[#5227FF] text-white px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(82,39,255,0.6)] font-medium flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                       Visitar Sitio <ExternalLink size={18} />
+                     </span>
+                  </div>
+                  <img 
+                    src="/appganadera.png" 
+                    alt="Preview Dashboard App Ganadera" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                </a>
+              </ScrollStackItem>
+
+            {/* PROYECTO 2: Agronegocios Lácteos */}
+              <ScrollStackItem itemClassName="bg-[var(--card-bg)] border border-[var(--card-border)] flex flex-col md:flex-row overflow-hidden min-h-min md:min-h-[450px] h-auto md:h-[450px] group project-item transition-colors duration-500 shadow-sm">
+                <div className="p-5 sm:p-6 md:p-12 flex-1 flex flex-col justify-center project-content z-10">
+                  <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Frontend</span>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-3 sm:mb-5 project-title transition-colors duration-500">Agro Negocios Lácteos</h3>
+                  <p className="text-[var(--text-muted)] text-sm sm:text-base mb-5 sm:mb-8 leading-relaxed project-description transition-colors duration-500">
+                    Landing page interactiva desarrollada para la presentación de la marca en exposiciones del sector agroindustrial. Diseño enfocado en la conversión, alto rendimiento y una experiencia de usuario fluida.
+                  </p>
+                  <div className="flex flex-wrap gap-2 sm:gap-3 project-tags">
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Next.js</span>
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Landing Page</span>
+                    <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Tailwind CSS</span>
+                  </div>
+                </div>
+                
+                <a href="https://agronegocioslacteos.com/" target="_blank" rel="noopener noreferrer" className="w-full shrink-0 md:flex-1 bg-[var(--bg-main)] border-t md:border-t-0 md:border-l border-[var(--card-border)] relative h-[250px] sm:h-[350px] md:h-auto overflow-hidden group cursor-pointer block transition-colors duration-500">
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-300 z-10 pointer-events-none"></div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
+                     <span className="bg-[#5227FF] text-white px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(82,39,255,0.6)] font-medium flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                       Visitar Sitio <ExternalLink size={18} />
+                     </span>
+                  </div>
+                  <img 
+                    src="/agrolacteos.png" 
+                    alt="Preview Agronegocios Lácteos" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                </a>
+              </ScrollStackItem>
+
+              {/* PROYECTO 3: Cruz Roja */}
               <ScrollStackItem itemClassName="bg-[var(--card-bg)] border border-[var(--card-border)] flex flex-col md:flex-row overflow-hidden min-h-min md:min-h-[450px] h-auto md:h-[450px] group project-item transition-colors duration-500 shadow-sm">
                 <div className="p-5 sm:p-6 md:p-12 flex-1 flex flex-col justify-center project-content z-10">
                   <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Full Stack</span>
@@ -644,7 +702,7 @@ export default function Portfolio() {
                 </a>
               </ScrollStackItem>
 
-              {/* PROYECTO 2: NETGEN (Bekka) */}
+              {/* PROYECTO 4: NETGEN (Bekka) */}
               <ScrollStackItem itemClassName="bg-[var(--card-bg)] border border-[var(--card-border)] flex flex-col md:flex-row overflow-hidden min-h-min md:min-h-[450px] h-auto md:h-[450px] group project-item transition-colors duration-500 shadow-sm">
                 <div className="p-5 sm:p-6 md:p-12 flex-1 flex flex-col justify-center project-content z-10">
                   <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Frontend • NETGEN</span>
@@ -674,13 +732,13 @@ export default function Portfolio() {
                 </a>
               </ScrollStackItem>
 
-              {/* PROYECTO 3: NETGEN (Academia / Fender) */}
+              {/* PROYECTO 5: NETGEN (Academia / Fender) */}
               <ScrollStackItem itemClassName="bg-[var(--card-bg)] border border-[var(--card-border)] flex flex-col md:flex-row overflow-hidden min-h-min md:min-h-[450px] h-auto md:h-[450px] group project-item transition-colors duration-500 shadow-sm">
                 <div className="p-5 sm:p-6 md:p-12 flex-1 flex flex-col justify-center project-content z-10">
                   <span className="text-[#FF9FFC] font-mono text-sm tracking-wider mb-3 block">Desarrollador Frontend • NETGEN</span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-3 sm:mb-5 project-title transition-colors duration-500">Landing Page Fender</h3>
                   <p className="text-[var(--text-muted)] text-sm sm:text-base mb-5 sm:mb-8 leading-relaxed project-description transition-colors duration-500">
-                    Desarrollo de landing pages adaptativas garantizando la entrega eficiente de consultas y gestión de leads.
+                    Desarrollo de landing pages adaptativas garantizando la entrega eficiente de consultas y gestión de leads. Integración de IA a través de una API para evaluación de writing y speaking.
                   </p>
                   <div className="flex flex-wrap gap-2 sm:gap-3 project-tags">
                     <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#5227FF]/10 border border-[#5227FF]/30 rounded-full text-xs sm:text-sm text-[var(--text-main)] tag-item transition-colors duration-500">Next.js</span>
@@ -703,6 +761,7 @@ export default function Portfolio() {
                   />
                 </a>
               </ScrollStackItem>
+              
             </ScrollStack>
           </div>
         </section>
