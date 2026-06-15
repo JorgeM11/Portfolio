@@ -224,7 +224,7 @@ export default function Portfolio() {
     
     setTimeout(() => {
       const link = document.createElement('a');
-      link.href = '/jorge-silva-cv.pdf'; 
+      link.href = '/Cv_Jorge_Silva.pdf'; 
       link.download = 'Jorge_Silva_CV.pdf';
       document.body.appendChild(link);
       link.click();
